@@ -1,0 +1,38 @@
+name: Stress Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  cpu-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CPU benchmark
+        run: |
+          echo "Running CPU benchmark..."
+          time seq 1 1000000 | wc -l
+          echo "✅ CPU test passed"
+          
+  memory-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Memory test
+        run: |
+          echo "Checking available memory..."
+          free -h
+          echo "Creating large array in memory..."
+          python3 -c "x = [i for i in range(1000000)]; print(f'Created array with {len(x)} elements')"
+          echo "✅ Memory test passed"
+          
+  disk-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disk I/O test
+        run: |
+          echo "Testing disk I/O..."
+          dd if=/dev/zero of=testfile bs=1M count=100
+          ls -lh testfile
+          rm testfile
+          echo "✅ Disk test passed"
