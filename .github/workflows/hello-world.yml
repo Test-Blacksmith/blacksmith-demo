@@ -1,0 +1,27 @@
+name: Hello World
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: |
+          echo "Hello from Blacksmith!"
+          echo "This workflow runs on Blacksmith runners"
+          echo "Current date: $(date)"
+          
+      - name: Show system info
+        run: |
+          echo "OS: $(uname -a)"
+          echo "CPU info:"
+          lscpu | grep "Model name"
+          echo "Memory:"
+          free -h
+          
+      - name: Success message
+        run: echo "✅ Workflow completed successfully on Blacksmith!"
