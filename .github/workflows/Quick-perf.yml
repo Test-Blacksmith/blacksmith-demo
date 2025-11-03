@@ -1,0 +1,29 @@
+name: Quick Performance Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  speed-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start timer
+        id: start
+        run: echo "START_TIME=$(date +%s)" >> $GITHUB_OUTPUT
+        
+      - name: Simulate work
+        run: |
+          echo "Running performance test..."
+          for i in {1..10}; do
+            echo "Task $i completed"
+            sleep 0.5
+          done
+          
+      - name: End timer and calculate
+        run: |
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - ${{ steps.start.outputs.START_TIME }}))
+          echo "⏱ Total duration: $DURATION seconds"
+          echo "This is running on Blacksmith's optimized runners!"
