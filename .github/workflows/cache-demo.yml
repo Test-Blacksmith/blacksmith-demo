@@ -1,0 +1,32 @@
+name: Cache Demo
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  cache-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create cache directory
+        run: mkdir -p cache-test
+        
+      - name: Generate cache data
+        run: |
+          echo "Generating cache data..."
+          date > cache-test/timestamp.txt
+          echo "Cache generated at $(date)" > cache-test/info.txt
+          
+      - name: Cache files
+        uses: actions/cache@v4
+        with:
+          path: cache-test
+          key: demo-cache-${{ github.run_id }}
+          
+      - name: Verify cache
+        run: |
+          echo "Cache contents:"
+          cat cache-test/timestamp.txt
+          cat cache-test/info.txt
+          echo "✅ Cache demo complete!"
