@@ -1,0 +1,42 @@
+name: File Operations
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  file-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create test files
+        run: |
+          echo "Creating test files..."
+          mkdir -p test-data
+          for i in {1..20}; do
+            echo "Test data $i - $(date)" > test-data/file-$i.txt
+          done
+          
+      - name: List files
+        run: |
+          echo "Files created:"
+          ls -lh test-data/
+          echo "Total files: $(ls test-data/ | wc -l)"
+          
+      - name: Process files
+        run: |
+          echo "Processing files..."
+          for file in test-data/*.txt; do
+            wc -l "$file"
+          done
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-data/
+          
+      - name: Cleanup
+        run: |
+          echo "Cleanup complete!"
+          echo "✅ All operations successful!"
