@@ -1,0 +1,20 @@
+name: Parallel Jobs Demo
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  parallel-job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job-id: [1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - name: Run job ${{ matrix.job-id }}
+        run: |
+          echo "Starting parallel job ${{ matrix.job-id }}"
+          sleep 3
+          echo "Job ${{ matrix.job-id }} completed successfully!"
+          echo "Running on Blacksmith runner"
